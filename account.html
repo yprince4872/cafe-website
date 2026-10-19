@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Account — Musafir Cafe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#6E1F2B">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Musafir Cafe">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body>
+
+<header id="siteHeader">
+  <nav class="topnav wrap">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="21" fill="#FBF3E7" stroke="#6E1F2B" stroke-width="2.5"/>
+        <path d="M14 30c3-10 6-16 10-16s7 6 10 16" stroke="#6E1F2B" stroke-width="2.2" fill="none"/>
+        <ellipse cx="24" cy="31" rx="12" ry="3.5" fill="#E8A33D" stroke="#6E1F2B" stroke-width="2"/>
+        <path d="M20 15c0-3 2-5 4-5s4 2 4 5" stroke="#2F6E62" stroke-width="2" fill="none"/>
+      </svg>
+      Musafir Cafe
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="menu.html">Menu</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="news.html">News</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="account.html" class="nav-account current" data-nav-account>👤 Login</a>
+      <button class="reserve-btn" data-open-reserve>Reservation</button>
+    </div>
+    <button class="burger-btn" id="burgerBtn" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<div class="mobile-panel" id="mobilePanel">
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="menu.html">Menu</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="news.html">News</a>
+  <a href="contact.html">Contact Us</a>
+  <a href="account.html" data-nav-account>👤 Login</a>
+  <button data-open-reserve>Reservation</button>
+</div>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="kicker">Your account</span>
+    <h1 id="pageTitle">Log in to see your orders</h1>
+    <p id="pageSub">Use your mobile number and a 6-digit PIN. All your past orders and bookings are kept here.</p>
+    <div class="crumb"><a href="index.html">Home</a> / My Account</div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap account-wrap">
+
+    <!-- ===== logged out: log in / create account ===== -->
+    <div class="auth-card" id="authBox">
+      <div class="auth-tabs" role="tablist">
+        <button type="button" class="auth-tab active" data-auth="login">Log in</button>
+        <button type="button" class="auth-tab" data-auth="signup">Create account</button>
+      </div>
+
+      <form id="loginForm" class="auth-form" novalidate>
+        <div class="field"><label for="loginPhone">Mobile number</label>
+          <input type="tel" id="loginPhone" inputmode="numeric" autocomplete="tel" maxlength="16" placeholder="98765 43210"></div>
+        <div class="field"><label for="loginPin">6-digit PIN</label>
+          <input type="password" id="loginPin" inputmode="numeric" autocomplete="current-password" maxlength="6" placeholder="••••••"></div>
+        <button type="submit" class="btn btn-primary auth-btn" id="loginBtn">Log in</button>
+        <p class="form-msg" id="loginMsg"></p>
+        <p class="auth-hint">Forgot your PIN? Call the cafe on <b class="acct-cafe-phone">our number</b> and we will set a new one for you.</p>
+      </form>
+
+      <form id="signupForm" class="auth-form is-hidden" novalidate>
+        <div class="field"><label for="signupName">Your name</label>
+          <input type="text" id="signupName" autocomplete="name" maxlength="60" placeholder="Ravi Kumar"></div>
+        <div class="field"><label for="signupPhone">Mobile number</label>
+          <input type="tel" id="signupPhone" inputmode="numeric" autocomplete="tel" maxlength="16" placeholder="98765 43210"></div>
+        <div class="field"><label for="signupPin">Choose a 6-digit PIN</label>
+          <input type="password" id="signupPin" inputmode="numeric" autocomplete="new-password" maxlength="6" placeholder="••••••"></div>
+        <div class="field"><label for="signupPin2">Type the PIN again</label>
+          <input type="password" id="signupPin2" inputmode="numeric" autocomplete="new-password" maxlength="6" placeholder="••••••"></div>
+        <button type="submit" class="btn btn-primary auth-btn" id="signupBtn">Create my account</button>
+        <p class="form-msg" id="signupMsg"></p>
+        <p class="auth-hint">Remember your PIN — it keeps your order history private.</p>
+      </form>
+    </div>
+
+    <!-- ===== logged in ===== -->
+    <div id="accountBox" class="is-hidden">
+      <div class="acct-head">
+        <div>
+          <h2 id="acctName">Hello</h2>
+          <p id="acctPhoneLine" class="acct-sub"></p>
+        </div>
+      </div>
+
+      <div class="acct-tabs">
+        <button type="button" class="acct-tab active" data-acct="orders">My orders</button>
+        <button type="button" class="acct-tab" data-acct="bookings">My bookings</button>
+        <button type="button" class="acct-tab" data-acct="settings">Account</button>
+      </div>
+
+      <!-- search + refresh (orders and bookings only) -->
+      <div class="acct-tools" id="listTools">
+        <div class="acct-search">
+          <input type="search" id="acctSearch" placeholder="Search orders — item, order number, status, date…" autocomplete="off" aria-label="Search">
+          <button type="button" id="acctSearchClear" class="acct-search-clear is-hidden" aria-label="Clear search">&times;</button>
+        </div>
+        <button type="button" class="acct-refresh" id="refreshBtn" aria-label="Refresh">↻</button>
+      </div>
+      <p class="acct-count is-hidden" id="acctCount"></p>
+
+      <div id="ordersList"></div>
+      <div id="bookingsList" class="is-hidden"></div>
+
+      <!-- Account tab: change PIN and log out live here, away from the order list -->
+      <div id="settingsPane" class="is-hidden">
+        <form id="pinForm" class="auth-card" novalidate>
+          <h3 class="acct-pane-title">Change PIN</h3>
+          <div class="field"><label for="oldPin">Current PIN</label>
+            <input type="password" id="oldPin" inputmode="numeric" autocomplete="current-password" maxlength="6" placeholder="••••••"></div>
+          <div class="field"><label for="newPin">New 6-digit PIN</label>
+            <input type="password" id="newPin" inputmode="numeric" autocomplete="new-password" maxlength="6" placeholder="••••••"></div>
+          <button type="submit" class="btn btn-primary auth-btn">Save new PIN</button>
+          <p class="form-msg" id="pinMsg"></p>
+        </form>
+
+        <div class="auth-card acct-logout-card">
+          <h3 class="acct-pane-title">Log out</h3>
+          <p class="auth-hint" style="margin:0 0 14px;">You will need your mobile number and PIN to log in again.</p>
+          <button type="button" class="btn btn-ghost auth-btn" id="logoutBtn">Log out</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">Musafir Cafe</div>
+        <p id="footerTagline">At Musafir Cafe, we don't just serve food and coffee — we create moments where every traveler finds comfort, every conversation becomes a memory, and every visit feels like coming home.</p>
+      </div>
+      <div>
+        <h4>Important Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Info</h4>
+        <ul>
+          <li><a href="contact.html" id="footerAddress">Moradabad, Uttar Pradesh 244001, India</a></li>
+          <li><a href="tel:+917248315496" id="footerPhone">+91 7248315496</a></li>
+          <li><a href="mailto:yprince4872@gmail.com" id="footerEmail">yprince4872@gmail.com</a></li>
+         
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 <span id="footerCityLine">Musafir Cafe, Moradabad</span>. All rights reserved.</span>
+      <span>A place where every traveler finds a pause.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-backdrop" id="reserveModal">
+  <div class="modal-box">
+    <button class="modal-close" data-close-reserve aria-label="Close">&times;</button>
+    <h3>Reserve a table</h3>
+    <p class="sub">We'll have a warm corner waiting. For booking, you can also call us directly.</p>
+    <form class="reserve-form">
+      <div class="field"><label for="rname">Name</label><input type="text" id="rname" required placeholder="Your name"></div>
+      <div class="row2">
+        <div class="field"><label for="rdate">Date</label><input type="date" id="rdate" required></div>
+        <div class="field"><label for="rtime">Time</label><input type="time" id="rtime" required></div>
+      </div>
+      <div class="field"><label for="rguests">Guests</label>
+        <select id="rguests"><option>2 guests</option><option>3–4 guests</option><option>5–8 guests</option><option>9+ guests</option></select>
+      </div>
+      <div class="field"><label for="rphone">Phone</label><input type="tel" id="rphone" placeholder="+91 7248315496"></div>
+      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Confirm reservation</button>
+      <p class="confirm-msg">🍵 Thank you — your table request has been sent. We'll call to confirm shortly.</p>
+    </form>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script src="content.js"></script>
+<script src="account.js"></script>
+</body>
+</html>

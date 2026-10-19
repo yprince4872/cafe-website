@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin — Musafir Cafe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body{ background:var(--cream); }
+  .admin-header{
+    background:var(--maroon); color:#fff; padding:20px 0; display:flex; align-items:center; justify-content:space-between;
+  }
+  .admin-header .wrap{ display:flex; align-items:center; justify-content:space-between; }
+  .admin-brand{ font-family:'Rozha One'; font-size:1.3rem; }
+  .admin-header button{
+    background:transparent; border:1.5px solid rgba(255,255,255,0.5); color:#fff; padding:8px 16px;
+    border-radius:999px; cursor:pointer; font-family:'Mukta'; font-size:0.9rem;
+  }
+  .admin-header button:hover{ background:rgba(255,255,255,0.12); }
+
+  .login-screen{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .login-card{
+    background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:36px; max-width:420px; width:100%;
+    border:1px solid var(--line);
+  }
+  .login-card h2{ color:var(--maroon); font-size:1.5rem; margin-bottom:8px; }
+  .login-card p{ color:var(--ink-soft); font-size:0.92rem; margin-bottom:22px; }
+  .login-card .field{ margin-bottom:16px; }
+  .login-card label{ display:block; font-family:'Rozha One'; font-size:0.88rem; margin-bottom:6px; color:var(--maroon); }
+  .login-card input{
+    width:100%; padding:11px 14px; border-radius:10px; border:2px solid var(--line); font-family:'Mukta'; font-size:0.96rem;
+  }
+  .login-card input:focus{ outline:none; border-color:var(--marigold); }
+  .login-error{ display:none; background:#F7E6E6; border:2px solid #B94A4A; color:#8A2E2E; padding:10px 14px; border-radius:10px; font-size:0.88rem; margin-bottom:14px; }
+  .login-error.show{ display:block; }
+
+  .dash{ display:none; }
+  .dash.active{ display:block; }
+  .dash-wrap{ max-width:1100px; margin:0 auto; padding:32px 24px 80px; }
+  .dash-tabs{ display:flex; gap:10px; margin-bottom:24px; }
+  .dash-tab{
+    font-family:'Rozha One'; padding:10px 20px; border-radius:999px; border:2px solid var(--maroon); background:transparent;
+    color:var(--maroon); cursor:pointer; font-size:0.95rem;
+  }
+  .dash-tab.active{ background:var(--maroon); color:#fff; }
+  .dash-panel{ display:none; }
+  .dash-panel.active{ display:block; }
+  .refresh-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px; }
+  .refresh-row button{
+    font-family:'Mukta'; font-weight:600; padding:9px 18px; border-radius:999px; border:2px solid var(--maroon);
+    background:#fff; color:var(--maroon); cursor:pointer;
+  }
+  .empty-note{ color:var(--ink-soft); text-align:center; padding:50px 0; }
+
+  .record-card{
+    background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin-bottom:14px; box-shadow:var(--shadow);
+  }
+  .record-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap; }
+  .record-top h4{ font-size:1.08rem; color:var(--maroon); }
+  .record-meta{ font-size:0.86rem; color:var(--ink-soft); margin-top:4px; }
+  .status-pill{
+    font-family:'Mukta'; font-weight:700; font-size:0.75rem; padding:5px 12px; border-radius:999px; text-transform:capitalize;
+  }
+  .status-pending, .status-received{ background:#FCEBC9; color:#8A5A0E; }
+  .status-confirmed{ background:#E1F0E4; color:#276B3B; }
+  .status-cancelled{ background:#F7E6E6; color:#8A2E2E; }
+  .status-preparing{ background:#DDEAF7; color:#1F4E7A; }
+  .status-ready{ background:#E1F0E4; color:#276B3B; }
+  .status-delivered{ background:#E6E1F2; color:#4B3A7A; }
+  .record-items{ margin-top:10px; font-size:0.9rem; color:var(--ink); }
+  .record-actions{ margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; }
+  .record-actions button{
+    font-size:0.82rem; padding:7px 14px; border-radius:999px; border:1.5px solid var(--line); background:#fff; cursor:pointer;
+  }
+  .record-actions button:hover{ border-color:var(--maroon); color:var(--maroon); }
+  .final-note{ font-weight:700; font-size:0.9rem; color:var(--ink-soft); padding:4px 2px; }
+  .record-actions button:disabled{ opacity:0.5; cursor:wait; }
+  .record-total{ font-family:'Rozha One'; color:var(--marigold-dark); font-size:1.05rem; }
+
+  .content-form{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:24px; box-shadow:var(--shadow); max-width:720px; }
+  .content-form .field{ margin-bottom:18px; }
+  .content-form label{ display:block; font-family:'Rozha One'; font-size:0.92rem; margin-bottom:6px; color:var(--maroon); }
+  .content-form input, .content-form textarea, .content-form select{
+    width:100%; padding:11px 14px; border-radius:10px; border:2px solid var(--line); font-family:'Mukta'; font-size:0.95rem;
+  }
+  .content-form input:focus, .content-form textarea:focus, .content-form select:focus{ outline:none; border-color:var(--marigold); }
+  .save-msg{ display:none; margin-top:14px; background:#E1F0E4; border:2px solid #276B3B; color:#276B3B; padding:10px 14px; border-radius:10px; font-size:0.88rem; }
+  .save-msg.show{ display:block; }
+
+  .manager-add{ background:var(--card); border:2px dashed var(--maroon); border-radius:16px; padding:20px; margin-bottom:24px; max-width:720px; }
+  .manager-add h4{ color:var(--maroon); font-size:1rem; margin-bottom:14px; }
+  .manager-add .row2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .manager-add .row3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  @media(max-width:600px){ .manager-add .row2, .manager-add .row3{ grid-template-columns:1fr; } }
+
+  .item-row{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:14px; background:var(--card);
+    border:1px solid var(--line); border-radius:14px; padding:14px 18px; margin-bottom:10px; flex-wrap:wrap;
+  }
+  .item-row img{ width:56px; height:56px; object-fit:cover; border-radius:8px; flex-shrink:0; }
+  .item-row .item-main{ display:flex; gap:12px; align-items:flex-start; flex:1; min-width:220px; }
+  .item-row h5{ font-family:'Rozha One'; color:var(--maroon); font-size:1rem; margin:0; }
+  .item-row p{ font-size:0.86rem; color:var(--ink-soft); margin-top:3px; }
+  .item-actions{ display:flex; gap:8px; flex-shrink:0; }
+  .item-actions button{ font-size:0.8rem; padding:6px 13px; border-radius:999px; border:1.5px solid var(--line); background:#fff; cursor:pointer; }
+  .item-actions button:hover{ border-color:var(--maroon); color:var(--maroon); }
+  .item-actions .danger:hover{ border-color:#B94A4A; color:#8A2E2E; }
+  .edit-row{ width:100%; display:grid; gap:10px; }
+  .edit-row .row2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .edit-row input, .edit-row textarea, .edit-row select{
+    width:100%; padding:9px 12px; border-radius:8px; border:2px solid var(--line); font-family:'Mukta'; font-size:0.9rem;
+  }
+  .edit-actions{ display:flex; gap:8px; margin-top:4px; }
+
+  .thumb-empty{ width:56px; height:56px; border-radius:8px; border:2px dashed var(--line); font-size:0.62rem; color:var(--ink-soft);
+    display:flex; align-items:center; justify-content:center; text-align:center; flex-shrink:0; line-height:1.2; }
+  .photo-slots{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; max-width:720px; margin-bottom:26px; }
+  @media(max-width:640px){ .photo-slots{ grid-template-columns:1fr; } }
+  .photo-slot{ display:flex; gap:12px; align-items:center; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; }
+  .slot-thumb{ width:84px; height:64px; border-radius:10px; overflow:hidden; background:#F1E7D3; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:0.7rem; color:var(--ink-soft); text-align:center; }
+  .slot-thumb img{ width:100%; height:100%; object-fit:cover; }
+  .slot-body strong{ display:block; font-size:0.86rem; color:var(--maroon); margin-bottom:6px; }
+  .slot-actions{ display:flex; gap:6px; flex-wrap:wrap; }
+  .slot-actions button, .item-actions button[data-photo-menu], .item-actions button[data-photo-news]{ font-size:0.78rem; padding:6px 12px; border-radius:999px; border:1.5px solid var(--line); background:#fff; cursor:pointer; }
+  .slot-actions button:hover{ border-color:var(--maroon); color:var(--maroon); }
+  .photo-field{ margin-bottom:12px; }
+  .photo-field input[type=file]{ width:100%; padding:9px 12px; border-radius:8px; border:2px dashed var(--line); background:#fff; }
+  .photo-field img.preview{ display:none; max-height:120px; border-radius:10px; margin-top:8px; }
+  .item-actions button:disabled{ opacity:0.5; cursor:wait; }
+
+  .order-items{ list-style:none; margin:12px 0 4px; padding:12px 16px; background:#FFF8EA; border:1px solid var(--line); border-radius:12px; }
+  .order-items li{ font-size:1.25rem; line-height:1.5; padding:3px 0; border-bottom:1px dashed var(--line); font-weight:600; color:var(--ink); }
+  .order-items li:last-child{ border-bottom:none; }
+  .oi-qty{ display:inline-block; min-width:2.4em; color:var(--maroon); font-family:'Rozha One'; }
+  .pay-info{ margin-top:10px; font-size:0.95rem; display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+  .pay-pill{ font-weight:700; font-size:0.78rem; padding:5px 12px; border-radius:999px; }
+  .pay-unpaid{ background:#FCEBC9; color:#8A5A0E; }
+  .pay-claimed{ background:#DDEAF7; color:#1F4E7A; }
+  .pay-paid{ background:#E1F0E4; color:#276B3B; }
+  .pay-btn{ font-size:0.85rem; padding:7px 14px; border-radius:999px; border:2px solid #276B3B; background:#fff; color:#276B3B; font-weight:700; cursor:pointer; }
+  .pay-btn:hover{ background:#E1F0E4; }
+  .pay-btn:disabled{ opacity:0.5; cursor:wait; }
+  .item-actions .avail-btn{ border-color:#B94A4A; color:#8A2E2E; }
+  .item-actions .avail-btn.is-off{ border-color:#276B3B; color:#276B3B; background:#E1F0E4; }
+
+  .upi-box{ background:var(--card); border:2px solid var(--marigold); border-radius:16px; padding:22px; max-width:720px; margin-bottom:26px; box-shadow:var(--shadow); }
+  .upi-box h4{ font-family:'Rozha One'; color:var(--maroon); font-size:1.15rem; margin-bottom:6px; }
+  .upi-box p{ color:var(--ink-soft); font-size:0.92rem; margin-bottom:16px; }
+  .upi-box .field{ margin-bottom:14px; }
+  .upi-box label{ display:block; font-family:'Rozha One'; font-size:0.88rem; margin-bottom:6px; color:var(--maroon); }
+  .upi-box input{ width:100%; padding:11px 14px; border-radius:10px; border:2px solid var(--line); font-family:'Mukta'; font-size:0.95rem; }
+  .upi-box input:focus{ outline:none; border-color:var(--marigold); }
+  .upi-state{ margin-top:12px; font-weight:700; font-size:0.9rem; }
+  .upi-state.on{ color:#276B3B; }
+  .upi-state.off{ color:#8A5A0E; }
+
+  .table-badge{ display:inline-block; background:var(--maroon); color:#fff; font-size:0.9rem; padding:3px 12px; border-radius:999px; margin-right:6px; font-family:'Mukta'; font-weight:700; }
+  .qr-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); gap:16px; margin-top:24px; }
+  .qr-card{ background:#fff; border:2px dashed var(--maroon); border-radius:14px; padding:16px; text-align:center; break-inside:avoid; }
+  .qr-title{ font-family:'Rozha One'; font-size:1.3rem; color:var(--maroon); margin-bottom:10px; }
+  .qr-code{ display:flex; justify-content:center; }
+  .qr-sub{ font-size:0.8rem; color:var(--ink-soft); margin-top:10px; }
+  @media print{
+    body *{ visibility:hidden; }
+    #qrGrid, #qrGrid *{ visibility:visible; }
+    #qrGrid{ position:absolute; left:0; top:0; width:100%; margin:0; }
+  }
+
+  /* ===== phone friendly admin ===== */
+  .record-card h4, .record-meta, .item-row h5, .item-row p, .record-items{ overflow-wrap:anywhere; }
+  .order-items li{ display:flex; gap:10px; align-items:baseline; }
+  .oi-qty{ min-width:2.2em; flex-shrink:0; }
+  .oi-name{ flex:1; min-width:0; overflow-wrap:anywhere; }
+  .item-actions{ flex-wrap:wrap; }
+  .record-actions{ flex-wrap:wrap; }
+  .dash-tab{ white-space:nowrap; }
+  @media(max-width:700px){
+    .admin-header .wrap{ gap:12px; padding:0 16px; }
+    .admin-brand{ font-size:1.05rem; }
+    .dash-wrap{ padding:20px 16px 90px; }
+    /* all tabs visible at once (they used to run off the right edge of the screen) */
+    .dash-tabs{ flex-wrap:wrap; gap:8px; }
+    .dash-tab{ padding:10px 14px; font-size:0.92rem; flex:1 1 auto; text-align:center; min-height:44px; }
+    .record-card{ padding:16px; }
+    .record-actions, .item-actions{ width:100%; }
+    .record-actions button, .item-actions button, .pay-btn, .refresh-row button{ min-height:44px; padding:9px 16px; font-size:0.92rem; }
+    .record-actions button, .item-actions button{ flex:1 1 auto; }
+    .order-items li{ font-size:1.15rem; }
+    .item-actions button[data-photo-menu], .item-actions button[data-photo-news]{ font-size:0.92rem; }
+    .qr-grid{ grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); }
+    .login-card{ padding:26px 20px; }
+  }
+
+  .cust-tools{ display:flex; gap:10px; align-items:center; margin-bottom:10px; }
+  .cust-search{ position:relative; flex:1; }
+  .cust-search input{
+    width:100%; min-height:46px; padding:11px 44px 11px 16px; border-radius:999px; border:2px solid var(--line);
+    background:#fff; font-family:'Mukta', sans-serif; font-size:16px;
+  }
+  .cust-search input:focus{ outline:none; border-color:var(--marigold); }
+  .cust-search-clear{
+    position:absolute; right:6px; top:50%; transform:translateY(-50%); width:34px; height:34px; border:none; border-radius:50%;
+    background:#F1E7D3; color:var(--ink-soft); font-size:1.4rem; line-height:1; cursor:pointer;
+  }
+  .cust-refresh{
+    min-height:46px; padding:0 18px; border-radius:999px; border:2px solid var(--maroon); background:#fff; color:var(--maroon);
+    font-weight:700; cursor:pointer; font-family:'Mukta', sans-serif; white-space:nowrap;
+  }
+  .cust-count{ color:var(--ink-soft); font-size:0.9rem; margin:0 0 14px 6px; }
+  @media(max-width:700px){ .cust-refresh{ min-width:46px; padding:0; font-size:0; } .cust-refresh::before{ content:'↻'; font-size:1.3rem; } }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <h2>Musafir Cafe — Admin</h2>
+    <p>Enter your backend URL and admin key to view reservations and orders.</p>
+    <p class="login-error" id="loginError">Could not connect — check the URL and key, and make sure the server is running.</p>
+    <form id="loginForm">
+      <div class="field">
+        <label for="apiUrl">Backend URL</label>
+        <input type="text" id="apiUrl" value="http://localhost:4000" required>
+      </div>
+      <div class="field">
+        <label for="adminKey">Admin key</label>
+        <input type="password" id="adminKey" placeholder="Your ADMIN_API_KEY from .env" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Sign in</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div class="dash" id="dash">
+  <div class="admin-header">
+    <div class="wrap">
+      <span class="admin-brand">Musafir Cafe — Admin</span>
+      <button id="logoutBtn">Sign out</button>
+    </div>
+  </div>
+
+  <div class="dash-wrap">
+    <div class="dash-tabs">
+      <button class="dash-tab active" data-panel="orders">Food Orders</button>
+      <button class="dash-tab" data-panel="reservations">Reservations</button>
+      <button class="dash-tab" data-panel="content">Site Content</button>
+      <button class="dash-tab" data-panel="menuMgr">Menu</button>
+      <button class="dash-tab" data-panel="galleryMgr">Gallery</button>
+      <button class="dash-tab" data-panel="newsMgr">News</button>
+      <button class="dash-tab" data-panel="customersMgr">Customers</button>
+      <button class="dash-tab" data-panel="tablesMgr">Table QR</button>
+    </div>
+
+    <div class="dash-panel active" id="panel-orders">
+      <div class="refresh-row">
+        <span style="color:var(--ink-soft); font-size:0.9rem;">Newest first</span>
+        <button data-refresh="orders">Refresh</button>
+      </div>
+      <div id="ordersList"></div>
+    </div>
+
+    <div class="dash-panel" id="panel-reservations">
+      <div class="refresh-row">
+        <span style="color:var(--ink-soft); font-size:0.9rem;">Newest first</span>
+        <button data-refresh="reservations">Refresh</button>
+      </div>
+      <div id="reservationsList"></div>
+    </div>
+
+    <!-- ===== SITE CONTENT (hero / about / contact / footer text) ===== -->
+    <div class="dash-panel" id="panel-content">
+      <p style="color:var(--ink-soft); margin-bottom:18px; max-width:640px;">This text appears on the live website — edit it here and it updates everywhere automatically, no code needed.</p>
+      <div class="upi-box">
+        <h4>💳 UPI payment</h4>
+        <p>Customers can <b>pay by UPI</b> (GPay, PhonePe, Paytm and others) while placing an order. Enter your UPI ID below. After paying, the customer enters the 12-digit UPI reference (UTR) number. You then check the payment in your UPI / bank app and tap <b>"Payment received"</b> on the order. Leave the UPI ID empty to turn UPI payment off.</p>
+        <form id="upiForm">
+          <div class="field"><label>Your UPI ID (e.g. 7248315496@ybl or name@okaxis)</label><input type="text" name="upi_id" placeholder="yourname@bank" autocomplete="off"></div>
+          <div class="field"><label>Name shown in the customer's UPI app</label><input type="text" name="upi_name" placeholder="Musafir Cafe"></div>
+          <button type="submit" class="btn btn-primary" id="upiSaveBtn">Save UPI settings</button>
+          <p class="upi-state" id="upiState"></p>
+        </form>
+      </div>
+      <h4 style="font-family:'Rozha One'; color:var(--maroon); margin-bottom:12px;">Website photos</h4>
+      <div class="photo-slots" id="sitePhotos"></div>
+      <form class="content-form" id="settingsForm">
+        <div class="field"><label>Home — badge text (e.g. "EST. MORADABAD")</label><input type="text" name="hero_badge"></div>
+        <div class="field"><label>Home — hero title</label><input type="text" name="hero_title"></div>
+        <div class="field"><label>Home — hero description</label><textarea name="hero_lede" rows="2"></textarea></div>
+        <div class="field"><label>About — heading</label><input type="text" name="about_heading"></div>
+        <div class="field"><label>About — paragraph 1</label><textarea name="about_text1" rows="3"></textarea></div>
+        <div class="field"><label>About — paragraph 2</label><textarea name="about_text2" rows="3"></textarea></div>
+        <div class="field"><label>About — mission statement</label><textarea name="mission_text" rows="3"></textarea></div>
+        <div class="field"><label>Address</label><input type="text" name="contact_address"></div>
+        <div class="field"><label>Phone</label><input type="text" name="contact_phone"></div>
+        <div class="field"><label>Email</label><input type="text" name="contact_email"></div>
+        <div class="field"><label>Footer tagline</label><textarea name="footer_tagline" rows="2"></textarea></div>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        <p class="save-msg" id="settingsSaveMsg">✓ Saved — refresh the website to see it live.</p>
+      </form>
+    </div>
+
+    <!-- ===== MENU MANAGER ===== -->
+    <div class="dash-panel" id="panel-menuMgr">
+      <div class="manager-add">
+        <h4>Add a menu item</h4>
+        <form id="menuAddForm">
+          <div class="row2" style="margin-bottom:12px;">
+            <div><label style="font-family:'Rozha One'; font-size:0.85rem; color:var(--maroon); display:block; margin-bottom:5px;">Category</label>
+              <select name="category" required>
+                <option value="coffee">Coffee & Chai</option>
+                <option value="snacks">Snacks & Chaat</option>
+                <option value="mains">Fusion Mains</option>
+                <option value="sweets">Sweets & Cold</option>
+              </select>
+            </div>
+            <div><label style="font-family:'Rozha One'; font-size:0.85rem; color:var(--maroon); display:block; margin-bottom:5px;">Price (₹)</label>
+              <input type="number" name="price" min="0" step="1" required>
+            </div>
+          </div>
+          <div style="margin-bottom:12px;"><input type="text" name="name" placeholder="Item name" required style="width:100%; padding:10px 12px; border-radius:8px; border:2px solid var(--line);"></div>
+          <div style="margin-bottom:12px;"><input type="text" name="description" placeholder="Short description" style="width:100%; padding:10px 12px; border-radius:8px; border:2px solid var(--line);"></div>
+          <div class="photo-field">
+            <label style="font-family:'Rozha One'; font-size:0.85rem; color:var(--maroon); display:block; margin-bottom:5px;">Photo (optional)</label>
+            <input type="file" id="menuAddFile" accept="image/*">
+            <img class="preview" id="menuAddPreview" alt="">
+          </div>
+          <button type="submit" class="btn btn-primary" id="menuAddBtn">Add item</button>
+        </form>
+      </div>
+      <div class="refresh-row"><span style="color:var(--ink-soft); font-size:0.9rem;">All categories</span><button data-refresh="menu">Refresh</button></div>
+      <div id="menuMgrList"></div>
+    </div>
+
+    <!-- ===== GALLERY MANAGER ===== -->
+    <div class="dash-panel" id="panel-galleryMgr">
+      <div class="manager-add">
+        <h4>Upload a photo from your phone or computer</h4>
+        <form id="galleryAddForm">
+          <div style="margin-bottom:12px;">
+            <input type="file" name="photo" id="galleryFile" accept="image/*" required style="width:100%; padding:10px 12px; border-radius:8px; border:2px dashed var(--line); background:#fff;">
+            <img id="galleryPreview" alt="" style="display:none; max-height:160px; border-radius:10px; margin-top:10px;">
+          </div>
+          <div style="margin-bottom:14px;"><input type="text" name="caption" placeholder="Caption (optional)" style="width:100%; padding:10px 12px; border-radius:8px; border:2px solid var(--line);"></div>
+          <button type="submit" class="btn btn-primary" id="galleryAddBtn">Upload photo</button>
+          <p class="save-msg" id="galleryUploadMsg"></p>
+        </form>
+      </div>
+      <div class="refresh-row"><span style="color:var(--ink-soft); font-size:0.9rem;">All photos</span><button data-refresh="gallery">Refresh</button></div>
+      <div id="galleryMgrList"></div>
+    </div>
+
+    <!-- ===== CUSTOMERS (accounts) ===== -->
+    <div class="dash-panel" id="panel-customersMgr">
+      <p style="color:var(--ink-soft); margin-bottom:16px; max-width:640px;">Customers who created an account on the website (mobile number + 6-digit PIN). If someone forgets their PIN, set a new one here and tell them.</p>
+      <div class="cust-tools">
+        <div class="cust-search">
+          <input type="search" id="customerSearch" placeholder="Search customers — name, mobile number, date…" autocomplete="off" aria-label="Search customers">
+          <button type="button" id="customerSearchClear" class="cust-search-clear" style="display:none;" aria-label="Clear search">&times;</button>
+        </div>
+        <button type="button" class="cust-refresh" data-refresh="customers" aria-label="Refresh">↻ Refresh</button>
+      </div>
+      <p class="cust-count" id="customerCount">Newest first</p>
+      <div id="customersList"></div>
+    </div>
+
+    <!-- ===== TABLE QR CODES ===== -->
+    <div class="dash-panel" id="panel-tablesMgr">
+      <p style="color:var(--ink-soft); margin-bottom:18px; max-width:640px;">Print one QR code for each table. When a customer scans it, your menu opens with their <b>table number already filled in</b>, so they can order and pay without calling anyone.</p>
+      <div class="content-form">
+        <div class="field"><label>Your website's menu page address (use your live website address)</label><input type="text" id="qrBaseUrl" placeholder="https://yourcafe.com/menu.html"></div>
+        <div class="field"><label>Number of tables</label><input type="number" id="qrCount" min="1" max="100" value="10"></div>
+        <button type="button" class="btn btn-primary" id="qrGenerate">Create QR codes</button>
+        <button type="button" class="btn btn-ghost" id="qrPrint" style="display:none; margin-left:8px;">🖨 Print</button>
+        <p class="upi-state off" id="qrWarn" style="display:none; margin-top:12px;"></p>
+      </div>
+      <div class="qr-grid" id="qrGrid"></div>
+    </div>
+
+    <!-- ===== NEWS MANAGER ===== -->
+    <div class="dash-panel" id="panel-newsMgr">
+      <div class="manager-add">
+        <h4>Add a news post</h4>
+        <form id="newsAddForm">
+          <div style="margin-bottom:12px;"><input type="text" name="title" placeholder="Title" required style="width:100%; padding:10px 12px; border-radius:8px; border:2px solid var(--line);"></div>
+          <div style="margin-bottom:12px;"><textarea name="excerpt" placeholder="Short description" rows="2" style="width:100%; padding:10px 12px; border-radius:8px; border:2px solid var(--line);"></textarea></div>
+          <div class="row2" style="margin-bottom:12px;">
+            <input type="text" name="date_label" placeholder="Date label (e.g. Oct 2026)">
+            <input type="text" name="link" placeholder="Link (e.g. menu.html)">
+          </div>
+          <div class="photo-field">
+            <label style="font-family:'Rozha One'; font-size:0.85rem; color:var(--maroon); display:block; margin-bottom:5px;">Photo (optional)</label>
+            <input type="file" id="newsAddFile" accept="image/*">
+            <img class="preview" id="newsAddPreview" alt="">
+          </div>
+          <button type="submit" class="btn btn-primary" id="newsAddBtn">Add post</button>
+        </form>
+      </div>
+      <div class="refresh-row"><span style="color:var(--ink-soft); font-size:0.9rem;">All posts</span><button data-refresh="news">Refresh</button></div>
+      <div id="newsMgrList"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+let API_URL = '';
+let ADMIN_KEY = '';
+
+const loginScreen = document.getElementById('loginScreen');
+const dash = document.getElementById('dash');
+const loginForm = document.getElementById('loginForm');
+const loginError = document.getElementById('loginError');
+
+async function apiGet(path){
+  const res = await fetch(API_URL + path, { headers: { 'x-admin-key': ADMIN_KEY } });
+  if(!res.ok) throw new Error('Request failed: ' + res.status);
+  return res.json();
+}
+async function apiPatch(path, body){
+  const res = await fetch(API_URL + path, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_KEY },
+    body: JSON.stringify(body),
+  });
+  if(!res.ok) throw new Error('Request failed: ' + res.status);
+  return res.json();
+}
+async function apiSend(method, path, body){
+  const res = await fetch(API_URL + path, {
+    method,
+    headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_KEY },
+    body: body !== undefined ? JSON.stringify(body) : undefined,
+  });
+  if(!res.ok) throw new Error('Request failed: ' + res.status);
+  return res.json();
+}
+const apiPost = (path, body) => apiSend('POST', path, body);
+const apiPut = (path, body) => apiSend('PUT', path, body);
+const apiDelete = (path) => apiSend('DELETE', path);
+
+function statusClass(s){ return 'status-' + (s || 'pending'); }
+function fmtDate(iso){
+  try{ return new Date(iso.replace(' ', 'T') + 'Z').toLocaleString(); } catch(e){ return iso; }
+}
+
+// ---------- orders ----------
+// Which buttons an order can still show. Once delivered or cancelled it is
+// final: no buttons, just the status.
+const ORDER_FLOW = {
+  pending:   [['preparing', '✓ Confirm (preparing)'], ['cancelled', 'Cancel']],
+  preparing: [['ready', 'Ready'], ['delivered', 'Delivered'], ['cancelled', 'Cancel']],
+  ready:     [['delivered', 'Delivered'], ['cancelled', 'Cancel']],
+  delivered: [],
+  cancelled: [],
+};
+
+function orderCardHTML(o){
+  let items = [];
+  // backend already sends items as an array; older data may be a JSON string
+  if(Array.isArray(o.items)){ items = o.items; }
+  else { try{ items = JSON.parse(o.items); } catch(e){ items = []; } }
+  // one line per item, large and easy to read
+  const itemsHTML = items.map(i => `<li><span class="oi-qty">${esc(i.qty)}×</span> <span class="oi-name">${esc(i.name)}</span></li>`).join('');
+
+  const actions = ORDER_FLOW[o.status] || [];
+  const actionsHTML = actions.length
+    ? actions.map(([value, label]) => `<button type="button" data-order-status="${o.id}" data-value="${value}">${label}</button>`).join('')
+    : `<span class="final-note">${o.status === 'delivered' ? '✓ Delivered' : '✕ Cancelled'}</span>`;
+
+  // payment line (cash, or UPI with its verification state)
+  let payHTML = '';
+  if(o.payment_method === 'upi'){
+    const states = {
+      unpaid:  ['Waiting for UPI payment', 'pay-unpaid'],
+      claimed: ['Customer says paid — check your UPI app', 'pay-claimed'],
+      paid:    ['✓ Payment received', 'pay-paid'],
+    };
+    const [label, cls] = states[o.payment_status] || states.unpaid;
+    const canMarkPaid = o.payment_status !== 'paid' && o.status !== 'cancelled';
+    payHTML = `
+      <div class="pay-info">
+        <strong>Payment: UPI</strong> <span class="pay-pill ${cls}">${label}</span>
+        ${o.payment_ref ? `<span class="record-meta"> · UTR: <b>${esc(o.payment_ref)}</b></span>` : ''}
+        ${canMarkPaid ? `<button type="button" class="pay-btn" data-order-pay="${o.id}" data-amount="${esc(o.total)}">✓ Payment received</button>` : ''}
+      </div>`;
+  } else {
+    payHTML = `<div class="pay-info"><strong>Payment:</strong> Cash — pay at cafe / on delivery</div>`;
+  }
+
+  return `
+    <div class="record-card" data-order-card="${o.id}">
+      <div class="record-top">
+        <div>
+          <h4>#${o.id} · ${esc(o.name)} ${o.order_type === 'dine-in' && o.table_number ? `<span class="table-badge">🪑 Table ${esc(o.table_number)}</span>` : ''}<span class="status-pill ${statusClass(o.status)}">${esc(o.status)}</span></h4>
+          <div class="record-meta">${esc(o.phone)} · ${o.order_type === 'dine-in' ? 'Dine-in' : esc(o.order_type)}${o.address ? ' · ' + esc(o.address) : ''} · ${fmtDate(o.created_at)}</div>
+        </div>
+        <span class="record-total">₹${esc(o.total)}</span>
+      </div>
+      <ul class="order-items">${itemsHTML}</ul>
+      ${o.notes ? `<div class="record-meta" style="margin-top:6px;">Note: ${esc(o.notes)}</div>` : ''}
+      ${payHTML}
+      <div class="record-actions">${actionsHTML}</div>
+    </div>`;
+}
+
+// Updates only the one card that changed — the list is not reloaded, so
+// the page does not jump or flash.
+function swapOrderCard(card, updated){
+  const fresh = htmlToEl(orderCardHTML(updated));
+  card.replaceWith(fresh);
+  bindOrderCard(fresh);
+}
+
+function bindOrderCard(card){
+  card.querySelectorAll('[data-order-pay]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if(!confirm('Have you received ₹' + btn.dataset.amount + ' for this order in your UPI app?')) return;
+      const buttons = card.querySelectorAll('button');
+      buttons.forEach(b => b.disabled = true);
+      try{
+        const updated = await apiPatch(`/api/orders/${btn.dataset.orderPay}/payment-status`, { payment_status: 'paid' });
+        swapOrderCard(card, updated);
+      }catch(err){
+        buttons.forEach(b => b.disabled = false);
+        alert('Could not update the payment: ' + err.message);
+      }
+    });
+  });
+  card.querySelectorAll('[data-order-status]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const buttons = card.querySelectorAll('button');
+      buttons.forEach(b => b.disabled = true);
+      try{
+        const updated = await apiPatch(`/api/orders/${btn.dataset.orderStatus}`, { status: btn.dataset.value });
+        swapOrderCard(card, updated);
+      }catch(err){
+        buttons.forEach(b => b.disabled = false);
+        alert('Could not update the order: ' + err.message);
+      }
+    });
+  });
+}
+
+function renderOrders(orders){
+  const el = document.getElementById('ordersList');
+  if(!orders.length){ el.innerHTML = '<p class="empty-note">No food orders yet.</p>'; return; }
+  el.innerHTML = orders.map(orderCardHTML).join('');
+  el.querySelectorAll('[data-order-card]').forEach(bindOrderCard);
+}
+
+// ---------- reservations ----------
+const RESERVATION_FLOW = {
+  pending:   [['confirmed', '✓ Mark confirmed'], ['cancelled', 'Cancel']],
+  confirmed: [['cancelled', 'Cancel']],
+  cancelled: [],
+};
+
+function reservationCardHTML(r){
+  const actions = RESERVATION_FLOW[r.status] || [];
+  const actionsHTML = actions.length
+    ? actions.map(([value, label]) => `<button type="button" data-res-status="${r.id}" data-value="${value}">${label}</button>`).join('')
+    : `<span class="final-note">✕ Cancelled</span>`;
+  return `
+    <div class="record-card" data-res-card="${r.id}">
+      <div class="record-top">
+        <div>
+          <h4>${esc(r.name)} <span class="status-pill ${statusClass(r.status)}">${esc(r.status)}</span></h4>
+          <div class="record-meta">${esc(r.phone)} · ${esc(r.date)} at ${esc(r.time)} · ${esc(r.guests)} · requested ${fmtDate(r.created_at)}</div>
+        </div>
+      </div>
+      ${r.message ? `<div class="record-meta" style="margin-top:6px;">Note: ${esc(r.message)}</div>` : ''}
+      <div class="record-actions">${actionsHTML}</div>
+    </div>`;
+}
+
+function bindReservationCard(card){
+  card.querySelectorAll('[data-res-status]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const buttons = card.querySelectorAll('button');
+      buttons.forEach(b => b.disabled = true);
+      try{
+        const updated = await apiPatch(`/api/reservations/${btn.dataset.resStatus}`, { status: btn.dataset.value });
+        const tmp = document.createElement('div');
+        tmp.innerHTML = reservationCardHTML(updated).trim();
+        const fresh = tmp.firstElementChild;
+        card.replaceWith(fresh);
+        bindReservationCard(fresh);
+      }catch(err){
+        buttons.forEach(b => b.disabled = false);
+        alert('Could not update the reservation: ' + err.message);
+      }
+    });
+  });
+}
+
+function renderReservations(rows){
+  const el = document.getElementById('reservationsList');
+  if(!rows.length){ el.innerHTML = '<p class="empty-note">No reservations yet.</p>'; return; }
+  el.innerHTML = rows.map(reservationCardHTML).join('');
+  el.querySelectorAll('[data-res-card]').forEach(bindReservationCard);
+}
+
+async function loadOrders(){
+  try{ renderOrders(await apiGet('/api/orders')); }
+  catch(e){ document.getElementById('ordersList').innerHTML = '<p class="empty-note">Could not load orders.</p>'; }
+}
+async function loadReservations(){
+  try{ renderReservations(await apiGet('/api/reservations')); }
+  catch(e){ document.getElementById('reservationsList').innerHTML = '<p class="empty-note">Could not load reservations.</p>'; }
+}
+
+// ================= SITE CONTENT (settings) =================
+const settingsForm = document.getElementById('settingsForm');
+const settingsSaveMsg = document.getElementById('settingsSaveMsg');
+
+async function loadSettingsIntoForm(){
+  try{
+    const s = await apiGet('/api/content/settings');
+    Object.entries(s).forEach(([key, value]) => {
+      const field = settingsForm.elements[key];
+      if(field) field.value = value;
+    });
+    renderSitePhotos(s);
+    fillUpiForm(s);
+  }catch(e){ /* leave blank if it fails, admin can still fill + save */ }
+}
+
+// ---------- UPI settings (own small form, saves instantly) ----------
+const upiForm = document.getElementById('upiForm');
+const upiState = document.getElementById('upiState');
+const UPI_PATTERN = /^[a-zA-Z0-9._-]{2,}@[a-zA-Z0-9.-]{2,}$/;
+
+function showUpiState(id){
+  if(id && UPI_PATTERN.test(id)){
+    upiState.textContent = '✓ UPI payment is ON — customers can pay by UPI to ' + id;
+    upiState.className = 'upi-state on';
+  } else {
+    upiState.textContent = 'UPI payment is OFF — customers can only choose "Pay at cafe / on delivery".';
+    upiState.className = 'upi-state off';
+  }
+}
+function fillUpiForm(s){
+  upiForm.elements.upi_id.value = s.upi_id || '';
+  upiForm.elements.upi_name.value = s.upi_name || '';
+  showUpiState((s.upi_id || '').trim());
+}
+upiForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = upiForm.elements.upi_id.value.trim();
+  if(id && !UPI_PATTERN.test(id)){ alert('That does not look like a UPI ID. It should look like name@bank (for example 7248315496@ybl).'); return; }
+  const btn = document.getElementById('upiSaveBtn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  try{
+    await apiPut('/api/admin/settings', { upi_id: id, upi_name: upiForm.elements.upi_name.value.trim() });
+    showUpiState(id);
+  }catch(err){ alert('Could not save: ' + err.message); }
+  finally{ btn.disabled = false; btn.textContent = 'Save UPI settings'; }
+});
+
+settingsForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const data = {};
+  new FormData(settingsForm).forEach((value, key) => data[key] = value);
+  try{
+    await apiPut('/api/admin/settings', data);
+    settingsSaveMsg.classList.add('show');
+    setTimeout(() => settingsSaveMsg.classList.remove('show'), 4000);
+  }catch(e){ alert('Could not save — check your connection and try again.'); }
+});
+
+// ================= SHARED PHOTO HELPERS =================
+const adminImg = (u) => (u && u.startsWith('/uploads/') ? API_URL + u : u);
+
+// shrink in the browser, upload to the backend, get back the public path
+async function uploadPhoto(file){
+  const data = await fileToResizedDataURL(file);
+  const r = await apiPost('/api/admin/upload', { data });
+  return r.url;
+}
+function wirePreview(inputId, imgId){
+  const input = document.getElementById(inputId), img = document.getElementById(imgId);
+  input.addEventListener('change', () => {
+    const f = input.files[0];
+    if(f){ img.src = URL.createObjectURL(f); img.style.display = 'block'; } else { img.style.display = 'none'; }
+  });
+}
+function htmlToEl(html){
+  const t = document.createElement('div'); t.innerHTML = html.trim(); return t.firstElementChild;
+}
+const esc = (v) => String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+
+// ================= WEBSITE PHOTOS (hero / about / dining) =================
+const SITE_PHOTO_SLOTS = [
+  ['hero_image',   'Home page — main photo'],
+  ['hero_image2',  'Home page — small photo'],
+  ['dining_image', 'Home page — dining section'],
+  ['about_image',  'About page photo'],
+];
+function renderSitePhotos(settings){
+  const box = document.getElementById('sitePhotos');
+  box.innerHTML = SITE_PHOTO_SLOTS.map(([key, label]) => {
+    const url = settings[key];
+    return `
+      <div class="photo-slot" data-slot="${key}">
+        <div class="slot-thumb">${url ? `<img src="${esc(adminImg(url))}" alt="">` : 'Default photo'}</div>
+        <div class="slot-body">
+          <strong>${label}</strong>
+          <div class="slot-actions">
+            <button type="button" data-slot-choose>📷 Choose photo</button>
+            ${url ? '<button type="button" data-slot-reset>Use default</button>' : ''}
+            <input type="file" accept="image/*" hidden>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+  box.querySelectorAll('.photo-slot').forEach(slot => {
+    const key = slot.dataset.slot;
+    const input = slot.querySelector('input[type=file]');
+    const chooseBtn = slot.querySelector('[data-slot-choose]');
+    chooseBtn.addEventListener('click', () => input.click());
+    input.addEventListener('change', async () => {
+      if(!input.files[0]) return;
+      chooseBtn.disabled = true; chooseBtn.textContent = 'Uploading...';
+      try{
+        const url = await uploadPhoto(input.files[0]);
+        renderSitePhotos(await apiPut('/api/admin/settings', { [key]: url }));
+      }catch(err){ alert('Could not upload the photo: ' + err.message); chooseBtn.disabled = false; chooseBtn.textContent = '📷 Choose photo'; }
+    });
+    const reset = slot.querySelector('[data-slot-reset]');
+    if(reset) reset.addEventListener('click', async () => {
+      try{ renderSitePhotos(await apiPut('/api/admin/settings', { [key]: '' })); }
+      catch(err){ alert('Could not reset the photo: ' + err.message); }
+    });
+  });
+}
+
+// ================= MENU MANAGER =================
+const CATEGORY_LABELS = { coffee: 'Coffee & Chai', snacks: 'Snacks & Chaat', mains: 'Fusion Mains', sweets: 'Sweets & Cold' };
+
+function menuPayload(item, overrides){
+  return Object.assign({ category: item.category, name: item.name, description: item.description || '',
+    price: Number(item.price), image_url: item.image_url || '' }, overrides || {});
+}
+
+function menuRowHTML(item){
+  const thumb = item.image_url ? `<img src="${esc(adminImg(item.image_url))}" alt="">` : '<div class="thumb-empty">No photo</div>';
+  return `
+    <div class="item-row" data-row-id="${item.id}">
+      <div class="item-main">
+        ${thumb}
+        <div>
+          <h5>${esc(item.name)} <span style="font-weight:400; color:var(--ink-soft); font-size:0.82rem;">(${CATEGORY_LABELS[item.category] || esc(item.category)})</span>${item.available === 0 ? ' <span class="status-pill status-cancelled">Unavailable</span>' : ''}</h5>
+          <p>${esc(item.description)} — ₹${item.price}</p>
+        </div>
+      </div>
+      <div class="item-actions">
+        <button type="button" class="${item.available === 0 ? 'avail-btn is-off' : 'avail-btn'}" data-toggle-avail>${item.available === 0 ? '✓ Mark available' : '⛔ Mark unavailable'}</button>
+        <button type="button" data-photo-menu>📷 ${item.image_url ? 'Change' : 'Add'} photo</button>
+        <button type="button" data-edit-menu>Edit</button>
+        <button type="button" class="danger" data-delete-menu>Delete</button>
+        <input type="file" accept="image/*" hidden data-photo-input>
+      </div>
+    </div>`;
+}
+
+// Only this one row is replaced when something changes — the list is never
+// reloaded, so nothing jumps or resets.
+function replaceMenuRow(row, item){
+  const fresh = htmlToEl(menuRowHTML(item));
+  row.replaceWith(fresh);
+  bindMenuRow(fresh, item);
+}
+
+function bindMenuRow(row, item){
+  const availBtn = row.querySelector('[data-toggle-avail]');
+  availBtn.addEventListener('click', async () => {
+    availBtn.disabled = true;
+    try{
+      const updated = await apiPatch('/api/admin/menu/' + item.id + '/availability', { available: item.available === 0 });
+      replaceMenuRow(row, updated);
+    }catch(err){ availBtn.disabled = false; alert('Could not update availability: ' + err.message); }
+  });
+  const photoBtn = row.querySelector('[data-photo-menu]');
+  const photoInput = row.querySelector('[data-photo-input]');
+  photoBtn.addEventListener('click', () => photoInput.click());
+  photoInput.addEventListener('change', async () => {
+    if(!photoInput.files[0]) return;
+    photoBtn.disabled = true; photoBtn.textContent = 'Uploading...';
+    try{
+      const url = await uploadPhoto(photoInput.files[0]);
+      replaceMenuRow(row, await apiPut('/api/admin/menu/' + item.id, menuPayload(item, { image_url: url })));
+    }catch(err){ alert('Could not upload the photo: ' + err.message); replaceMenuRow(row, item); }
+  });
+
+  row.querySelector('[data-delete-menu]').addEventListener('click', async () => {
+    if(!confirm('Delete this menu item?')) return;
+    try{ await apiDelete('/api/admin/menu/' + item.id); row.remove(); }
+    catch(err){ alert('Could not delete: ' + err.message); }
+  });
+
+  row.querySelector('[data-edit-menu]').addEventListener('click', () => {
+    row.innerHTML = `
+      <div class="edit-row">
+        <div class="row2">
+          <select name="category">
+            ${Object.entries(CATEGORY_LABELS).map(([v,l]) => `<option value="${v}" ${v===item.category?'selected':''}>${l}</option>`).join('')}
+          </select>
+          <input type="number" name="price" value="${item.price}" min="0" step="1">
+        </div>
+        <input type="text" name="name" value="${esc(item.name)}">
+        <textarea name="description" rows="2">${esc(item.description)}</textarea>
+        <div>
+          <label style="font-size:0.82rem; color:var(--ink-soft);">Photo ${item.image_url ? '(leave empty to keep the current one)' : '(optional)'}</label>
+          <input type="file" name="photo" accept="image/*">
+          ${item.image_url ? '<label style="font-size:0.82rem; display:block; margin-top:6px;"><input type="checkbox" name="removePhoto" style="width:auto;"> Remove current photo</label>' : ''}
+        </div>
+        <div class="edit-actions">
+          <button type="button" class="btn btn-primary" data-save-menu style="padding:8px 18px; font-size:0.85rem;">Save</button>
+          <button type="button" data-cancel-menu>Cancel</button>
+        </div>
+      </div>`;
+    row.querySelector('[data-cancel-menu]').addEventListener('click', () => replaceMenuRow(row, item));
+    row.querySelector('[data-save-menu]').addEventListener('click', async (e) => {
+      const btn = e.currentTarget; btn.disabled = true; btn.textContent = 'Saving...';
+      try{
+        const file = row.querySelector('[name="photo"]').files[0];
+        const remove = row.querySelector('[name="removePhoto"]');
+        let image_url = item.image_url || '';
+        if(file) image_url = await uploadPhoto(file);
+        else if(remove && remove.checked) image_url = '';
+        const updated = await apiPut('/api/admin/menu/' + item.id, {
+          category: row.querySelector('[name="category"]').value,
+          price: Number(row.querySelector('[name="price"]').value),
+          name: row.querySelector('[name="name"]').value,
+          description: row.querySelector('[name="description"]').value,
+          image_url,
+        });
+        replaceMenuRow(row, updated);
+      }catch(err){ alert('Could not save: ' + err.message); btn.disabled = false; btn.textContent = 'Save'; }
+    });
+  });
+}
+
+async function loadMenuMgr(){
+  const el = document.getElementById('menuMgrList');
+  try{
+    const items = await apiGet('/api/content/menu');
+    if(!items.length){ el.innerHTML = '<p class="empty-note">No menu items yet — add one above.</p>'; return; }
+    el.innerHTML = items.map(menuRowHTML).join('');
+    el.querySelectorAll('.item-row').forEach(row => {
+      bindMenuRow(row, items.find(i => String(i.id) === row.dataset.rowId));
+    });
+  }catch(e){ el.innerHTML = '<p class="empty-note">Could not load the menu.</p>'; }
+}
+
+wirePreview('menuAddFile', 'menuAddPreview');
+document.getElementById('menuAddForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const btn = document.getElementById('menuAddBtn');
+  btn.disabled = true; btn.textContent = 'Adding...';
+  try{
+    const file = document.getElementById('menuAddFile').files[0];
+    const image_url = file ? await uploadPhoto(file) : '';
+    await apiPost('/api/admin/menu', {
+      category: form.category.value, name: form.name.value,
+      description: form.description.value, price: Number(form.price.value), image_url,
+    });
+    form.reset();
+    document.getElementById('menuAddPreview').style.display = 'none';
+    loadMenuMgr();
+  }catch(err){ alert('Could not add the item: ' + err.message); }
+  finally{ btn.disabled = false; btn.textContent = 'Add item'; }
+});
+
+// ================= GALLERY MANAGER =================
+async function loadGalleryMgr(){
+  const el = document.getElementById('galleryMgrList');
+  try{
+    const images = await apiGet('/api/content/gallery');
+    if(!images.length){ el.innerHTML = '<p class="empty-note">No photos yet — add one above.</p>'; return; }
+    el.innerHTML = images.map(img => `
+      <div class="item-row">
+        <div class="item-main">
+          <img src="${adminImg(img.image_url)}" alt="">
+          <div><h5>${img.caption || '(no caption)'}</h5><p style="word-break:break-all;">${img.image_url.startsWith('/uploads/') ? 'Uploaded photo' : img.image_url}</p></div>
+        </div>
+        <div class="item-actions"><button class="danger" data-delete-gallery="${img.id}">Delete</button></div>
+      </div>`).join('');
+    el.querySelectorAll('[data-delete-gallery]').forEach(btn => btn.addEventListener('click', async () => {
+      if(!confirm('Delete this photo?')) return;
+      await apiDelete('/api/admin/gallery/' + btn.dataset.deleteGallery);
+      loadGalleryMgr();
+    }));
+  }catch(e){ el.innerHTML = '<p class="empty-note">Could not load the gallery.</p>'; }
+}
+
+// Phone photos can be 5-10 MB. Shrink them in the browser first (max 1600px,
+// JPEG) so uploads are fast and the website loads quickly.
+function fileToResizedDataURL(file, maxSize = 1600, quality = 0.85){
+  return new Promise((resolve, reject) => {
+    if(file.type === 'image/gif'){ // keep animated gifs untouched
+      const r = new FileReader();
+      r.onload = () => resolve(r.result); r.onerror = reject; r.readAsDataURL(file); return;
+    }
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Could not read that image')); };
+    img.src = url;
+  });
+}
+
+const galleryFile = document.getElementById('galleryFile');
+const galleryPreview = document.getElementById('galleryPreview');
+galleryFile.addEventListener('change', () => {
+  const f = galleryFile.files[0];
+  if(f){ galleryPreview.src = URL.createObjectURL(f); galleryPreview.style.display = 'block'; }
+  else { galleryPreview.style.display = 'none'; }
+});
+
+document.getElementById('galleryAddForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const btn = document.getElementById('galleryAddBtn');
+  const msg = document.getElementById('galleryUploadMsg');
+  const file = galleryFile.files[0];
+  if(!file) return;
+  btn.disabled = true; btn.textContent = 'Uploading...';
+  try{
+    const data = await fileToResizedDataURL(file);
+    const uploaded = await apiPost('/api/admin/upload', { data });
+    await apiPost('/api/admin/gallery', { image_url: uploaded.url, caption: form.caption.value });
+    form.reset();
+    galleryPreview.style.display = 'none';
+    msg.textContent = '✓ Photo added to the gallery.'; msg.classList.add('show');
+    setTimeout(() => msg.classList.remove('show'), 3500);
+    loadGalleryMgr();
+  }catch(err){
+    alert('Could not upload the photo: ' + err.message);
+  }finally{
+    btn.disabled = false; btn.textContent = 'Upload photo';
+  }
+});
+
+// ================= NEWS MANAGER =================
+function newsPayload(p, overrides){
+  return Object.assign({ title: p.title, excerpt: p.excerpt || '', image_url: p.image_url || '',
+    date_label: p.date_label || '', link: p.link || '' }, overrides || {});
+}
+
+function newsRowHTML(p){
+  const thumb = p.image_url ? `<img src="${esc(adminImg(p.image_url))}" alt="">` : '<div class="thumb-empty">No photo</div>';
+  return `
+    <div class="item-row" data-news-id="${p.id}">
+      <div class="item-main">
+        ${thumb}
+        <div><h5>${esc(p.title)}</h5><p>${esc(p.date_label)} — ${esc(p.excerpt)}</p></div>
+      </div>
+      <div class="item-actions">
+        <button type="button" data-photo-news>📷 ${p.image_url ? 'Change' : 'Add'} photo</button>
+        <button type="button" data-edit-news>Edit</button>
+        <button type="button" class="danger" data-delete-news>Delete</button>
+        <input type="file" accept="image/*" hidden data-photo-input>
+      </div>
+    </div>`;
+}
+
+function replaceNewsRow(row, p){
+  const fresh = htmlToEl(newsRowHTML(p));
+  row.replaceWith(fresh);
+  bindNewsRow(fresh, p);
+}
+
+function bindNewsRow(row, p){
+  const photoBtn = row.querySelector('[data-photo-news]');
+  const photoInput = row.querySelector('[data-photo-input]');
+  photoBtn.addEventListener('click', () => photoInput.click());
+  photoInput.addEventListener('change', async () => {
+    if(!photoInput.files[0]) return;
+    photoBtn.disabled = true; photoBtn.textContent = 'Uploading...';
+    try{
+      const url = await uploadPhoto(photoInput.files[0]);
+      replaceNewsRow(row, await apiPut('/api/admin/news/' + p.id, newsPayload(p, { image_url: url })));
+    }catch(err){ alert('Could not upload the photo: ' + err.message); replaceNewsRow(row, p); }
+  });
+
+  row.querySelector('[data-delete-news]').addEventListener('click', async () => {
+    if(!confirm('Delete this post?')) return;
+    try{ await apiDelete('/api/admin/news/' + p.id); row.remove(); }
+    catch(err){ alert('Could not delete: ' + err.message); }
+  });
+
+  row.querySelector('[data-edit-news]').addEventListener('click', () => {
+    row.innerHTML = `
+      <div class="edit-row">
+        <input type="text" name="title" value="${esc(p.title)}">
+        <textarea name="excerpt" rows="2">${esc(p.excerpt)}</textarea>
+        <div class="row2">
+          <input type="text" name="date_label" value="${esc(p.date_label)}" placeholder="Date label">
+          <input type="text" name="link" value="${esc(p.link)}" placeholder="Link">
+        </div>
+        <div>
+          <label style="font-size:0.82rem; color:var(--ink-soft);">Photo ${p.image_url ? '(leave empty to keep the current one)' : '(optional)'}</label>
+          <input type="file" name="photo" accept="image/*">
+          ${p.image_url ? '<label style="font-size:0.82rem; display:block; margin-top:6px;"><input type="checkbox" name="removePhoto" style="width:auto;"> Remove current photo</label>' : ''}
+        </div>
+        <div class="edit-actions">
+          <button type="button" class="btn btn-primary" data-save-news style="padding:8px 18px; font-size:0.85rem;">Save</button>
+          <button type="button" data-cancel-news>Cancel</button>
+        </div>
+      </div>`;
+    row.querySelector('[data-cancel-news]').addEventListener('click', () => replaceNewsRow(row, p));
+    row.querySelector('[data-save-news]').addEventListener('click', async (e) => {
+      const btn = e.currentTarget; btn.disabled = true; btn.textContent = 'Saving...';
+      try{
+        const file = row.querySelector('[name="photo"]').files[0];
+        const remove = row.querySelector('[name="removePhoto"]');
+        let image_url = p.image_url || '';
+        if(file) image_url = await uploadPhoto(file);
+        else if(remove && remove.checked) image_url = '';
+        const updated = await apiPut('/api/admin/news/' + p.id, {
+          title: row.querySelector('[name="title"]').value,
+          excerpt: row.querySelector('[name="excerpt"]').value,
+          date_label: row.querySelector('[name="date_label"]').value,
+          link: row.querySelector('[name="link"]').value,
+          image_url,
+        });
+        replaceNewsRow(row, updated);
+      }catch(err){ alert('Could not save: ' + err.message); btn.disabled = false; btn.textContent = 'Save'; }
+    });
+  });
+}
+
+async function loadNewsMgr(){
+  const el = document.getElementById('newsMgrList');
+  try{
+    const posts = await apiGet('/api/content/news');
+    if(!posts.length){ el.innerHTML = '<p class="empty-note">No posts yet — add one above.</p>'; return; }
+    el.innerHTML = posts.map(newsRowHTML).join('');
+    el.querySelectorAll('.item-row').forEach(row => {
+      bindNewsRow(row, posts.find(x => String(x.id) === row.dataset.newsId));
+    });
+  }catch(e){ el.innerHTML = '<p class="empty-note">Could not load news.</p>'; }
+}
+
+wirePreview('newsAddFile', 'newsAddPreview');
+document.getElementById('newsAddForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const btn = document.getElementById('newsAddBtn');
+  btn.disabled = true; btn.textContent = 'Adding...';
+  try{
+    const file = document.getElementById('newsAddFile').files[0];
+    const image_url = file ? await uploadPhoto(file) : '';
+    await apiPost('/api/admin/news', {
+      title: form.title.value, excerpt: form.excerpt.value, date_label: form.date_label.value,
+      link: form.link.value, image_url,
+    });
+    form.reset();
+    document.getElementById('newsAddPreview').style.display = 'none';
+    loadNewsMgr();
+  }catch(err){ alert('Could not add the post: ' + err.message); }
+  finally{ btn.disabled = false; btn.textContent = 'Add post'; }
+});
+
+// ================= TABLE QR CODES =================
+const qrBase = document.getElementById('qrBaseUrl');
+qrBase.value = location.href.split('#')[0].split('?')[0].replace(/admin\.html$/, 'menu.html');
+
+document.getElementById('qrGenerate').addEventListener('click', () => {
+  const grid = document.getElementById('qrGrid');
+  const warn = document.getElementById('qrWarn');
+  warn.style.display = 'none';
+  let base;
+  try{ base = new URL(qrBase.value.trim()); }
+  catch(e){ alert('Please enter the full address of your menu page, like https://yourcafe.com/menu.html'); return; }
+  if(typeof QRCode === 'undefined'){ alert('The QR code tool could not load. Check your internet connection and reload this page.'); return; }
+  if(base.protocol === 'file:' || ['localhost', '127.0.0.1'].includes(base.hostname)){
+    warn.textContent = 'Heads up: this address only works on your own computer. Customers cannot open it, so use your live website address before printing.';
+    warn.style.display = 'block';
+  }
+  const count = Math.min(100, Math.max(1, parseInt(document.getElementById('qrCount').value, 10) || 1));
+  grid.innerHTML = '';
+  for(let n = 1; n <= count; n++){
+    const url = new URL(base.href); url.search = ''; url.hash = ''; url.searchParams.set('table', n);
+    const card = document.createElement('div');
+    card.className = 'qr-card';
+    card.innerHTML = '<div class="qr-title">Table ' + n + '</div><div class="qr-code"></div><div class="qr-sub">Scan to order &amp; pay</div>';
+    grid.appendChild(card);
+    new QRCode(card.querySelector('.qr-code'), { text: url.href, width: 150, height: 150 });
+  }
+  document.getElementById('qrPrint').style.display = 'inline-flex';
+});
+document.getElementById('qrPrint').addEventListener('click', () => window.print());
+
+// ================= CUSTOMERS =================
+function fmtJoined(iso){
+  const d = new Date(String(iso).replace(' ', 'T') + 'Z');
+  return isNaN(d) ? '' : d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+}
+let customersCache = [];
+const customerSearch = document.getElementById('customerSearch');
+
+// everything the owner might type to find a customer
+function customerText(c){
+  return [c.name, c.phone, '+91 ' + c.phone, fmtJoined(c.created_at), c.orders_count + ' orders', '#' + c.id].join(' ').toLowerCase();
+}
+// every word typed must match, so "ravi 98765" narrows the list down
+function customerMatches(c, query){
+  const text = customerText(c);
+  query = query.toLowerCase();
+  // "12 orders" / "0 orders" / "no orders" means: customers with exactly that many orders
+  const countPhrase = query.match(/(\d+)\s*orders?\b/);
+  if(countPhrase){
+    if(String(c.orders_count) !== countPhrase[1]) return false;
+    query = query.replace(countPhrase[0], ' ');
+  } else if(/\bno orders?\b/.test(query)){
+    if(c.orders_count !== 0) return false;
+    query = query.replace(/\bno orders?\b/, ' ');
+  }
+  return query.split(/\s+/).filter(Boolean).every(tok => {
+    if(/^\+?[\d-]+$/.test(tok)){                       // looks like (part of) a mobile number
+      let digits = tok.replace(/\D/g, '');
+      if(digits.length === 12 && digits.startsWith('91')) digits = digits.slice(2);
+      if(digits && c.phone.includes(digits)) return true;
+    }
+    return text.includes(tok);
+  });
+}
+
+function drawCustomers(){
+  const el = document.getElementById('customersList');
+  const countEl = document.getElementById('customerCount');
+  const query = customerSearch.value.trim();
+  document.getElementById('customerSearchClear').style.display = query ? 'block' : 'none';
+  const total = customersCache.length;
+  const rows = customersCache.filter(c => !query || customerMatches(c, query));
+  countEl.textContent = query
+    ? rows.length + ' of ' + total + ' customer' + (total === 1 ? '' : 's') + ' match "' + query + '"'
+    : total + ' customer' + (total === 1 ? '' : 's') + ' · newest first';
+  if(!total){ el.innerHTML = '<p class="empty-note">No customer accounts yet.</p>'; return; }
+  if(!rows.length){ el.innerHTML = '<p class="empty-note">No customer matches your search.</p>'; return; }
+  el.innerHTML = rows.map(c => `
+    <div class="item-row" data-customer-id="${c.id}">
+      <div class="item-main"><div>
+        <h5>${esc(c.name)}</h5>
+        <p>📞 ${esc(c.phone)} · ${esc(c.orders_count)} order${c.orders_count === 1 ? '' : 's'} · joined ${esc(fmtJoined(c.created_at))}</p>
+      </div></div>
+      <div class="item-actions">
+        <button type="button" data-reset-pin="${c.id}">🔑 Reset PIN</button>
+        <button type="button" class="danger" data-delete-customer="${c.id}">Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+async function loadCustomers(){
+  const el = document.getElementById('customersList');
+  try{
+    customersCache = await apiGet('/api/admin/customers');
+    drawCustomers();            // keeps whatever is typed in the search box
+  }catch(e){ el.innerHTML = '<p class="empty-note">Could not load customers.</p>'; }
+}
+
+// one click listener for the whole list (the list is redrawn while searching)
+document.getElementById('customersList').addEventListener('click', async (e) => {
+  const resetBtn = e.target.closest('[data-reset-pin]');
+  const deleteBtn = e.target.closest('[data-delete-customer]');
+  if(resetBtn){
+    const pin = prompt('Type a new 6-digit PIN for this customer, then tell it to them:');
+    if(pin === null) return;
+    if(!/^\d{6}$/.test(pin.trim())){ alert('The PIN must be exactly 6 digits.'); return; }
+    try{ await apiPatch('/api/admin/customers/' + resetBtn.dataset.resetPin + '/pin', { pin: pin.trim() }); alert('Done. The new PIN is ' + pin.trim()); }
+    catch(err){ alert('Could not reset the PIN: ' + err.message); }
+  }
+  if(deleteBtn){
+    if(!confirm('Delete this customer account? Their orders stay in your order list, but they will lose their login and history.')) return;
+    try{
+      await apiDelete('/api/admin/customers/' + deleteBtn.dataset.deleteCustomer);
+      customersCache = customersCache.filter(c => String(c.id) !== deleteBtn.dataset.deleteCustomer);
+      drawCustomers();
+    }catch(err){ alert('Could not delete: ' + err.message); }
+  }
+});
+customerSearch.addEventListener('input', drawCustomers);
+document.getElementById('customerSearchClear').addEventListener('click', () => { customerSearch.value = ''; drawCustomers(); customerSearch.focus(); });
+
+function loadAllContent(){
+  loadSettingsIntoForm();
+  loadMenuMgr();
+  loadGalleryMgr();
+  loadNewsMgr();
+  loadCustomers();
+}
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  API_URL = document.getElementById('apiUrl').value.replace(/\/$/, '');
+  ADMIN_KEY = document.getElementById('adminKey').value;
+  loginError.classList.remove('show');
+  try{
+    await apiGet('/api/reservations');
+    sessionStorage.setItem('musafir-admin-url', API_URL);
+    sessionStorage.setItem('musafir-admin-key', ADMIN_KEY);
+    loginScreen.style.display = 'none';
+    dash.classList.add('active');
+    loadOrders();
+    loadReservations();
+    loadAllContent();
+    restoreSavedTab();
+  }catch(err){
+    loginError.classList.add('show');
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  sessionStorage.removeItem('musafir-admin-url');
+  sessionStorage.removeItem('musafir-admin-key');
+  dash.classList.remove('active');
+  loginScreen.style.display = 'flex';
+});
+
+function activateTab(name){
+  const tab = document.querySelector(`.dash-tab[data-panel="${name}"]`);
+  if(!tab) return;
+  document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+  tab.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+  sessionStorage.setItem('musafir-admin-tab', name);
+}
+document.querySelectorAll('.dash-tab').forEach(tab => {
+  tab.addEventListener('click', () => activateTab(tab.dataset.panel));
+});
+// if the page ever reloads, come back to the same tab instead of the first one
+function restoreSavedTab(){
+  const saved = sessionStorage.getItem('musafir-admin-tab');
+  if(saved) activateTab(saved);
+}
+
+const refreshHandlers = {
+  orders: loadOrders, reservations: loadReservations,
+  menu: loadMenuMgr, gallery: loadGalleryMgr, news: loadNewsMgr, customers: loadCustomers,
+};
+document.querySelectorAll('[data-refresh]').forEach(btn => {
+  btn.addEventListener('click', () => (refreshHandlers[btn.dataset.refresh] || (() => {}))());
+});
+
+// auto-restore session if key was saved this tab session
+const savedUrl = sessionStorage.getItem('musafir-admin-url');
+const savedKey = sessionStorage.getItem('musafir-admin-key');
+if(savedUrl && savedKey){
+  API_URL = savedUrl; ADMIN_KEY = savedKey;
+  loginScreen.style.display = 'none';
+  dash.classList.add('active');
+  loadOrders();
+  loadReservations();
+  loadAllContent();
+  restoreSavedTab();
+}
+</script>
+</body>
+</html>

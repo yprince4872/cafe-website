@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>About Us — Musafir Cafe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#6E1F2B">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Musafir Cafe">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body>
+
+<header id="siteHeader">
+  <nav class="topnav wrap">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="21" fill="#FBF3E7" stroke="#6E1F2B" stroke-width="2.5"/>
+        <path d="M14 30c3-10 6-16 10-16s7 6 10 16" stroke="#6E1F2B" stroke-width="2.2" fill="none"/>
+        <ellipse cx="24" cy="31" rx="12" ry="3.5" fill="#E8A33D" stroke="#6E1F2B" stroke-width="2"/>
+        <path d="M20 15c0-3 2-5 4-5s4 2 4 5" stroke="#2F6E62" stroke-width="2" fill="none"/>
+      </svg>
+      Musafir Cafe
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html" class="current">About Us</a>
+      <a href="menu.html">Menu</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="news.html">News</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="account.html" class="nav-account" data-nav-account>👤 Login</a>
+      <button class="reserve-btn" data-open-reserve>Reservation</button>
+    </div>
+    <button class="burger-btn" id="burgerBtn" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<div class="mobile-panel" id="mobilePanel">
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="menu.html">Menu</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="news.html">News</a>
+  <a href="contact.html">Contact Us</a>
+  <a href="account.html" data-nav-account>👤 Login</a>
+  <button data-open-reserve>Reservation</button>
+</div>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="kicker">Our story</span>
+    <h1>Every journey deserves a pause</h1>
+    <p>Every journey deserves a pause, and every story deserves a listener. Musafir Cafe was built to be both.</p>
+    <div class="crumb"><a href="index.html">Home</a> / About Us</div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap split">
+    <div class="reveal">
+      <img id="aboutImage" src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=700&q=80" alt="Interior seating area of Musafir Cafe" style="border-radius:20px; box-shadow:var(--shadow);">
+    </div>
+    <div class="reveal">
+      <span class="kicker">A home for every traveler</span>
+      <h2 id="aboutHeading">Welcome, whoever you are</h2>
+      <p style="margin-top:16px; color:var(--ink-soft);" id="aboutText1">Whether you're a student preparing for what's next, a professional catching a peaceful break, a family spending time together, or a traveler passing through — Musafir Cafe opens its doors with the same warmth for everyone.</p>
+      <p style="margin-top:14px; color:var(--ink-soft);" id="aboutText2">We believe some of life's best conversations happen over a steaming cup of tea or fresh coffee. Every table here has seen its share of laughter, dreams and reunions — and every sip is meant to feel like a small comfort.</p>
+    </div>
+  </div>
+</section>
+
+<div class="flight-divider">
+  <span class="line"></span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="#6E1F2B" stroke-width="1.6"><path d="M2 16l20-6-6 20-3-8-8-3 20-6" stroke-linejoin="round"/></svg>
+  <span class="line"></span>
+</div>
+
+<section style="background:var(--card);">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="kicker">More than food and drink</span>
+      <h2>A space to become part of someone's story</h2>
+      <p>It's a place where strangers become friends, old memories get relived, and new ones quietly begin.</p>
+    </div>
+    <div class="highlights">
+      <div class="highlight-card reveal">
+        <span class="stamp">MADE<br>WITH CARE</span>
+        <h4>Crafted, not rushed</h4>
+        <p>Fresh coffee, aromatic teas, and snacks made with quality ingredients — comfort for the soul, happiness for the taste buds.</p>
+      </div>
+      <div class="highlight-card reveal">
+        <span class="stamp">QUIET<br>CORNERS</span>
+        <h4>Room to just be</h4>
+        <p>Celebrate small wins, plan big dreams, read a chapter, or simply enjoy the comforting silence with a warm cup in hand.</p>
+      </div>
+      <div class="highlight-card reveal">
+        <span class="stamp">SIMPLE &<br>WARM</span>
+        <h4>An ambiance to unwind in</h4>
+        <p>Every corner is thoughtfully arranged for a relaxed, unhurried visit — whether it's a quick stop or a whole afternoon.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap" style="text-align:center; max-width:760px;">
+    <div class="reveal">
+      <span class="kicker">Our mission</span>
+      <h2 style="margin-top:10px;">Comfort, peace, and a reason to stay a little longer</h2>
+      <p style="margin-top:18px; color:var(--ink-soft); font-size:1.05rem;" id="missionText">We don't just serve beverages — we serve experiences that stay with you long after you've left. Because Musafir Cafe isn't just a café, it's a place where every traveler finds a pause, every heart finds a little peace, and every cup creates a memory.</p>
+      <a href="contact.html" class="btn btn-primary" style="margin-top:28px;">Come find us</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">Musafir Cafe</div>
+        <p id="footerTagline">At Musafir Cafe, we don't just serve food and coffee — we create moments where every traveler finds comfort, every conversation becomes a memory, and every visit feels like coming home.</p>
+      </div>
+      <div>
+        <h4>Important Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Info</h4>
+        <ul>
+          <li><a href="contact.html" id="footerAddress">Moradabad, Uttar Pradesh 244001, India</a></li>
+          <li><a href="tel:+917248315496" id="footerPhone">+91 7248315496</a></li>
+          <li><a href="mailto:yprince4872@gmail.com" id="footerEmail">yprince4872@gmail.com</a></li>
+         
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 <span id="footerCityLine">Musafir Cafe, Moradabad</span>. All rights reserved.</span>
+      <span>A place where every traveler finds a pause.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-backdrop" id="reserveModal">
+  <div class="modal-box">
+    <button class="modal-close" data-close-reserve aria-label="Close">&times;</button>
+    <h3>Reserve a table</h3>
+    <p class="sub">We'll have a warm corner waiting. For booking, you can also call us directly.</p>
+    <form class="reserve-form">
+      <div class="field"><label for="rname">Name</label><input type="text" id="rname" required placeholder="Your name"></div>
+      <div class="row2">
+        <div class="field"><label for="rdate">Date</label><input type="date" id="rdate" required></div>
+        <div class="field"><label for="rtime">Time</label><input type="time" id="rtime" required></div>
+      </div>
+      <div class="field"><label for="rguests">Guests</label>
+        <select id="rguests"><option>2 guests</option><option>3–4 guests</option><option>5–8 guests</option><option>9+ guests</option></select>
+      </div>
+      <div class="field"><label for="rphone">Phone</label><input type="tel" id="rphone" placeholder="+91 7248315496"></div>
+      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Confirm reservation</button>
+      <p class="confirm-msg">🍵 Thank you — your table request has been sent. We'll call to confirm shortly.</p>
+    </form>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script src="content.js"></script>
+</body>
+</html>

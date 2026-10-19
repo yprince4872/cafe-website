@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Musafir Cafe — Sip, Relax & Create Beautiful Memories</title>
+<meta name="description" content="Musafir Cafe in Moradabad — a cozy retreat for coffee, chai and unforgettable memories.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#6E1F2B">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Musafir Cafe">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body>
+
+<header id="siteHeader">
+  <nav class="topnav wrap">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="21" fill="#FBF3E7" stroke="#6E1F2B" stroke-width="2.5"/>
+        <path d="M14 30c3-10 6-16 10-16s7 6 10 16" stroke="#6E1F2B" stroke-width="2.2" fill="none"/>
+        <ellipse cx="24" cy="31" rx="12" ry="3.5" fill="#E8A33D" stroke="#6E1F2B" stroke-width="2"/>
+        <path d="M20 15c0-3 2-5 4-5s4 2 4 5" stroke="#2F6E62" stroke-width="2" fill="none"/>
+      </svg>
+      Musafir Cafe
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="current">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="menu.html">Menu</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="news.html">News</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="account.html" class="nav-account" data-nav-account>👤 Login</a>
+      <button class="reserve-btn" data-open-reserve>Reservation</button>
+    </div>
+    <button class="burger-btn" id="burgerBtn" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<div class="mobile-panel" id="mobilePanel">
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="menu.html">Menu</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="news.html">News</a>
+  <a href="contact.html">Contact Us</a>
+  <a href="account.html" data-nav-account>👤 Login</a>
+  <button data-open-reserve>Reservation</button>
+</div>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="stamp-pin">
+        <span class="stamp" id="heroBadge">EST.<br>MORADABAD</span>
+      </div>
+      <h1 id="heroTitle">Warmth &amp; memories, one cup at a time</h1>
+      <p class="lede" id="heroLede">Musafir means traveler — and every journey deserves a peaceful pause. Come sip a fresh coffee or evening chai, and let a quiet corner find you here.</p>
+      <div class="hero-ctas">
+        <a href="menu.html" class="btn btn-primary">Explore the menu</a>
+        <a href="gallery.html" class="btn btn-ghost">View gallery</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="postcard">
+        <img id="heroImage" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=700&q=80" alt="Warm cup of chai on a wooden table at Musafir Cafe">
+      </div>
+      <div class="postcard postcard-2">
+        <img id="heroImage2" src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=400&q=80" alt="Cozy cafe corner seating">
+      </div>
+      <div class="route-badge">Sip · Relax · Remember</div>
+    </div>
+  </div>
+</section>
+
+<div class="flight-divider">
+  <span class="line"></span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="#6E1F2B" stroke-width="1.6"><path d="M2 16l20-6-6 20-3-8-8-3 20-6" stroke-linejoin="round"/></svg>
+  <span class="line"></span>
+</div>
+
+<!-- ================= YOUR COZY CORNER ================= -->
+<section>
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="kicker">Your cozy corner</span>
+      <h2>The taste of togetherness</h2>
+      <p>Musafir Cafe is a retreat for travelers and dreamers alike — a place to slow down, reconnect, and share good food with the people who matter.</p>
+    </div>
+    <div class="highlights">
+      <div class="highlight-card reveal">
+        <span class="stamp">MORNING<br>BREW</span>
+        <h4>Start your day right</h4>
+        <p>Freshly brewed coffee to ease you into the morning, however far you've traveled to get here.</p>
+      </div>
+      <div class="highlight-card reveal">
+        <span class="stamp">EVENING<br>CHAI</span>
+        <h4>Wind down slowly</h4>
+        <p>A steaming cup of chai and a quiet corner — the perfect pause between one chapter and the next.</p>
+      </div>
+      <div class="highlight-card reveal">
+        <span class="stamp">SHARED<br>PLATES</span>
+        <h4>Made for company</h4>
+        <p>Snacks and comfort food built for sharing, because the best stories come out over a full table.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="flight-divider">
+  <span class="line"></span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="#6E1F2B" stroke-width="1.6"><path d="M2 16l20-6-6 20-3-8-8-3 20-6" stroke-linejoin="round"/></svg>
+  <span class="line"></span>
+</div>
+
+<!-- ================= DINING EXPERIENCE ================= -->
+<section style="background:var(--card);">
+  <div class="wrap split">
+    <div class="reveal">
+      <img id="diningImage" src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=700&q=80" alt="Plated fusion dish at Musafir Cafe" style="border-radius:20px; box-shadow:var(--shadow);">
+    </div>
+    <div class="reveal">
+      <span class="kicker">Dining experience</span>
+      <h2>An ultimate dining experience, unlike any other</h2>
+      <p style="margin-top:16px; color:var(--ink-soft); font-size:1.05rem;">Our modern fusion menu blends Moradabad flavors with café-style comfort food. Take a seat, sip something warm, and let the evening slow down around you — that quiet feeling of <em>sukoon</em> is what we're here for.</p>
+      <a href="menu.html" class="btn btn-primary" style="margin-top:26px;">See what's cooking</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RESERVE CTA STRIP ================= -->
+<section style="background:var(--maroon); color:#F3E3CE; text-align:center;">
+  <div class="wrap reveal">
+    <span class="kicker" style="color:var(--marigold);">A place where every traveler feels at home</span>
+    <h2 style="color:#fff; margin-top:10px; font-size:clamp(1.8rem,3.4vw,2.5rem);">Take a seat. Share your stories.<br>Create new memories.</h2>
+    <button class="btn btn-primary" data-open-reserve style="margin-top:28px; background:var(--marigold); color:var(--ink); box-shadow:0 5px 0 var(--marigold-dark);">Reserve your table</button>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">Musafir Cafe</div>
+        <p id="footerTagline">At Musafir Cafe, we don't just serve food and coffee — we create moments where every traveler finds comfort, every conversation becomes a memory, and every visit feels like coming home.</p>
+      </div>
+      <div>
+        <h4>Important Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Info</h4>
+        <ul>
+          <li><a href="contact.html" id="footerAddress">Moradabad, Uttar Pradesh 244001, India</a></li>
+          <li><a href="tel:+917248315496" id="footerPhone">+91 7248315496</a></li>
+          <li><a href="mailto:yprince4872@gmail.com" id="footerEmail">yprince4872@gmail.com</a></li>
+
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 <span id="footerCityLine">Musafir Cafe, Moradabad</span>. All rights reserved.</span>
+      <span>A place where every traveler finds a pause.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= RESERVATION MODAL ================= -->
+<div class="modal-backdrop" id="reserveModal">
+  <div class="modal-box">
+    <button class="modal-close" data-close-reserve aria-label="Close">&times;</button>
+    <h3>Reserve a table</h3>
+    <p class="sub">We'll have a warm corner waiting. For booking, you can also call us directly.</p>
+    <form class="reserve-form">
+      <div class="field"><label for="rname">Name</label><input type="text" id="rname" required placeholder="Your name"></div>
+      <div class="row2">
+        <div class="field"><label for="rdate">Date</label><input type="date" id="rdate" required></div>
+        <div class="field"><label for="rtime">Time</label><input type="time" id="rtime" required></div>
+      </div>
+      <div class="field"><label for="rguests">Guests</label>
+        <select id="rguests"><option>2 guests</option><option>3–4 guests</option><option>5–8 guests</option><option>9+ guests</option></select>
+      </div>
+      <div class="field"><label for="rphone">Phone</label><input type="tel" id="rphone" placeholder="+91 7248315496"></div>
+      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Confirm reservation</button>
+      <p class="confirm-msg">🍵 Thank you — your table request has been sent. We'll call to confirm shortly.</p>
+    </form>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script src="content.js"></script>
+</body>
+</html>
