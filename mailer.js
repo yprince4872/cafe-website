@@ -54,7 +54,7 @@ async function sendReservationEmail(reservation) {
 }
 
 async function sendOrderEmail(order) {
-  const items = JSON.parse(order.items);
+  const items = Array.isArray(order.items) ? order.items : JSON.parse(order.items);
   const itemLines = items.map((i) => `  • ${i.qty} x ${i.name}  (₹${i.price} each)`).join('\n');
   const payLine = order.payment_method === 'upi'
     ? `Payment: UPI — customer says they paid ₹${order.total}. UTR: ${order.payment_ref || 'n/a'}. Check your UPI app, then mark "Payment received" in the admin panel.`

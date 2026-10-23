@@ -415,6 +415,7 @@ function updateUpiInline() {
   if (!upiInline.dataset.built) {
     upiInline.innerHTML = `
       <div class="upi-inline-head">Pay ₹<span id="upiAmount"></span> with UPI</div>
+      <p class="upi-return-note" id="upiReturnNote" style="display:none;">✅ Back from your UPI app? Type the 12-digit reference number below and tap <b>Place order</b>. <b>Your order is not placed yet.</b></p>
       <p class="done-sub"><b>Step 1:</b> pay with any UPI app. <b>Step 2:</b> type the 12-digit reference number below. <b>Step 3:</b> place your order.</p>
       <a class="btn btn-primary upi-pay-btn" id="upiAnyBtn" href="#">📱 Pay with any UPI app</a>
       <div class="upi-apps">
@@ -465,6 +466,8 @@ function maybeResumePayment() {
   sessionStorage.removeItem(RETURN_KEY);
   if (!getCart().length || !upiSelected()) return;
   openCart();
+  const note = document.getElementById('upiReturnNote');
+  if (note) note.style.display = 'block';
   setTimeout(() => { const el = document.getElementById('upiRef'); if (el) el.scrollIntoView({ block: 'center' }); }, 350);
 }
 
@@ -686,3 +689,22 @@ prefillFromAccount();
 if (new URLSearchParams(location.search).get('cart') === '1' && typeof openCart === 'function') {
   openCart();
 }
+
+// =====================================================================
+// KEEP THE CART ON SCREEN IN STEP WITH WHAT IS SAVED
+// =====================================================================
+// (a second tab changed or emptied the cart, or the Back button brought an old copy of this page back)
+window.addEventListener('storage', (e) => { if (e.key === CART_KEY || e.key === null) renderCart(); });
+window.addEventListener('pageshow', (e) => { if (e.persisted) renderCart(); });
+
+// =====================================================================
+// SITE VERSION — shown at the bottom of every page, so it is easy to check that a phone
+// is running the newest files (change this text whenever you replace the files)
+// =====================================================================
+const APP_VERSION = '2026.10.21-a';
+document.querySelectorAll('.foot-bottom').forEach((el) => {
+  const tag = document.createElement('span');
+  tag.className = 'app-version';
+  tag.textContent = 'Site version ' + APP_VERSION;
+  el.appendChild(tag);
+});

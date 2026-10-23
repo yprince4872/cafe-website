@@ -37,7 +37,7 @@
     if (!session) document.querySelector('.auth-tab[data-auth="login"]').click();   // logged-out screen always starts on "Log in"
     $('pageTitle').textContent = session ? 'My orders' : 'Log in to see your orders';
     $('pageSub').textContent = session
-      ? 'Everything you have ordered and booked with us.'
+      ? 'Everything you have ordered and booked with us, including earlier orders made with your mobile number.'
       : 'Use your mobile number and a 6-digit PIN. All your past orders and bookings are kept here.';
     if (session) {
       document.querySelector('.acct-tab[data-acct="orders"]').click();     // always start on "My orders"

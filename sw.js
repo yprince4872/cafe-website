@@ -1,11 +1,11 @@
 // sw.js — makes the website installable as an app and lets it open even with a weak signal.
 //
-// Pages, styles and scripts: ALWAYS try the internet first (so the latest version shows up as
-// soon as you update the website), and fall back to the saved copy only when offline.
-// Orders, payments, menu data and photos come from the backend / other sites and are never
-// saved here, so they are always live.
+// Pages, styles and scripts: ALWAYS ask the server for the newest copy first (so a file you just
+// updated shows up right away, even on phones that already have the site), and use the saved copy
+// only when there is no internet. Orders, payments, menu data and photos come from the backend /
+// other sites and are never saved here, so they are always live.
 
-const CACHE = 'musafir-app-v2';
+const CACHE = 'musafir-app-v3';
 const SHELL = [
   'index.html', 'about.html', 'menu.html', 'gallery.html', 'news.html', 'contact.html', 'account.html', 'offline.html',
   'styles.css', 'script.js', 'content.js', 'account.js', 'manifest.webmanifest',
@@ -14,7 +14,11 @@ const SHELL = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting())
+    caches.open(CACHE)
+      // 'reload' = take a fresh copy from the server, never the phone's old browser cache.
+      // A file that is missing must not stop the app from installing.
+      .then((cache) => Promise.allSettled(SHELL.map((url) => cache.add(new Request(url, { cache: 'reload' })))))
+      .then(() => self.skipWaiting())
   );
 });
 
@@ -33,7 +37,9 @@ self.addEventListener('fetch', (event) => {
   if (url.pathname.endsWith('/admin.html')) return;                          // admin is never saved
 
   event.respondWith(
-    fetch(req)
+    // 'no-cache' = always check with the server first. Without it, a phone could keep running an
+    // old script.js from its browser cache for hours after the file was replaced.
+    fetch(new Request(req, { cache: 'no-cache' }))
       .then((res) => {
         if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
         return res;
